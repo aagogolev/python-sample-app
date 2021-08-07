@@ -1,0 +1,36 @@
+ version: '3'
+
+ networks:
+   my_net: 
+
+ services:
+  db:
+     container_name: db
+     image: postgres:11.4-alpine
+     volumes:
+       - ./pg_data:/var/lib/postgresql/data/pgdata
+     environment:
+       - POSTGRES_USER=worker
+       - POSTGRES_PASSWORD=worker
+       - POSTGRES_DB=python_sample_app_db
+       - PGDATA=/var/lib/postgresql/data/pgdata 
+     ports:
+       - 5432:5432
+     networks:
+       - my_net
+     restart: always
+
+  app:
+     container_name: application
+     image: gitlab.ru:4567/alexandr_gogolev/cicd:$CI_COMMIT_SHORT_SHA
+     build: .
+     depends_on:
+      - db
+     environment:
+      - POSTGRESQL_URL=postgresql://worker:worker@db/python_sample_app_db  
+     command: bash -c 'flask db upgrade && python app.py'
+     ports:
+      - 5000:5000
+     networks:
+      - my_net
+     restart: always
