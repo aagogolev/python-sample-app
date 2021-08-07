@@ -15,7 +15,7 @@ build:
     - docker build -t "$CI_REGISTRY_IMAGE":"$CI_COMMIT_SHORT_SHA" .
     - docker push "$CI_REGISTRY_IMAGE":"$CI_COMMIT_SHORT_SHA"
   tags:
-    - docker1  
+    - docker2  
 
 deploy:
   stage: deploy
@@ -26,4 +26,4 @@ deploy:
     - docker-compose down
     - docker-compose up -d
   tags:
-    - docker1
+    - docker2
