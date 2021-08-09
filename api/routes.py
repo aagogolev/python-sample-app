@@ -5,7 +5,7 @@ from api.models import User
 
 @api.route('/')
 def hello():
-    return "Hello World Alexandr Gogolev! version 333333"
+    return "Hi simbir soft"
 
 
 @api.route('/api/user', methods=['GET'])
